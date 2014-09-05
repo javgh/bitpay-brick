@@ -1,0 +1,105 @@
+body {
+    background: url("images/bg-header.png") repeat-x;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: -99;
+
+    background: url("images/bg-footer.png") repeat-x;
+    height: 166px;
+}
+
+#logo_wrapper {
+    position: relative;
+    top: 300px;
+}
+
+#logo {
+    display: block;
+    margin: auto;
+    width: 750px;
+}
+
+img.logo_small {
+    position: absolute;
+    width: 350px;
+    bottom: 30px;
+    right: 30px;
+}
+
+.details {
+    width: 85%;
+    position: relative;
+    top: 140px;
+    margin: auto;
+}
+
+#details_main {
+    padding: 0 0 90px 0;
+    font-size: 65pt;
+    width: 100%;
+    text-align: center;
+}
+
+#details_left {
+    float: left;
+}
+
+#details_left img {
+    width: 350px;
+}
+
+#details_right {
+    width: 100%;
+    text-align: center;
+}
+
+#details_filler {
+    height: 50px;
+}
+
+#details_address {
+    padding: 20px 0 0 0;
+    font-size: 22pt;
+}
+
+#details_table {
+    padding: 50px 0 0 0;
+    text-align: left;
+    font-size: 22pt;
+}
+
+#details_table table {
+    margin: auto;
+}
+
+td.col_content {
+    text-align: right;
+}
+
+#received_msg {
+    padding: 150px 0px 0px 0px;
+    text-align: center;
+    font-size: 52pt;
+}
+
+#debug {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: none;
+}
+
+#payment_info {
+    display: none;
+}
+
+#payment_received {
+    display: none;
+}
