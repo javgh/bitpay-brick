@@ -26,67 +26,15 @@ body {
     width: 750px;
 }
 
-img.logo_small {
-    position: absolute;
-    width: 350px;
-    bottom: 30px;
-    right: 30px;
-}
-
-.details {
-    width: 85%;
-    position: relative;
-    top: 140px;
-    margin: auto;
-}
-
-#details_main {
-    padding: 0 0 90px 0;
-    font-size: 65pt;
+#invoice {
+    display: none;
     width: 100%;
-    text-align: center;
+    height: 100%;
 }
 
-#details_left {
-    float: left;
-}
-
-#details_left img {
-    width: 350px;
-}
-
-#details_right {
+#iframe {
     width: 100%;
-    text-align: center;
-}
-
-#details_filler {
-    height: 50px;
-}
-
-#details_address {
-    padding: 20px 0 0 0;
-    font-size: 22pt;
-}
-
-#details_table {
-    padding: 50px 0 0 0;
-    text-align: left;
-    font-size: 22pt;
-}
-
-#details_table table {
-    margin: auto;
-}
-
-td.col_content {
-    text-align: right;
-}
-
-#received_msg {
-    padding: 150px 0px 0px 0px;
-    text-align: center;
-    font-size: 52pt;
+    height: 100%;
 }
 
 #debug {
@@ -96,10 +44,3 @@ td.col_content {
     display: none;
 }
 
-#payment_info {
-    display: none;
-}
-
-#payment_received {
-    display: none;
-}

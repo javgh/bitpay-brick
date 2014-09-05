@@ -13,41 +13,15 @@
                 <img id="logo" src="images/bitcoin_accepted_here.png" alt="bitcoin accepted here" />
             </div>
         </div>
-        <div id="payment_info">
-            <div class="details">
-                <div id="details_main"><span id="amount">1.32 BTC</span></div>
-
-                <div id="details_left">
-                    <img id="qrcode" src="images/qrcode_dummy.png" alt="qrcode" />
-                </div>
-                <div id="details_right">
-                    <div id="details_filler"></div>
-
-                    <div id="details_address">Payable to <span id="address">14Z1mazY4HfysZyMaKudFr63EwHqQT2njz</span></div>
-
-                    <div id="details_table">
-                        <table>
-                            <tr><td class="col_desc">Exchange rate used</td><td>:</td><td class="col_content"><span id="rate">10.3241 USD</span></td></tr>
-                            <tr><td class="col_desc">Exchange rate source</td><td>:</td><td class="col_content"><span id="source">MtGox.com</span></td></tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <img class="logo_small" src="images/bitcoin_accepted_here.png" alt="bitcoin accepted here" />
-        </div>
-        <div id="payment_received">
-            <div class="details">
-                <div id="received_msg">Payment received. Thank you!</div>
-            </div>
-            <img class="logo_small" src="images/bitcoin_accepted_here.png" alt="bitcoin accepted here" />
+        <div id="invoice">
+            <iframe id="iframe" />
         </div>
         <div id="footer">
         </div>
         <div id="debug">
             Debug:
             <a href="#" onClick="show_idle()">show_idle()</a>
-            <a href="#" onClick="show_payment_info('1.32 BTC', ['8 USD', '10.3241 USD', 'MtGox.com'], '16NmYCwv89VrxeLGmEJdKBTHTXvVSJtGgb', 'images/qrcode_dummy.png')">show_payment_info()</a>
-            <a href="#" onClick="show_payment_received()">show_payment_received()</a>
+            <a href="#" onClick="show_invoice('https://bitpay.com/invoice?id=8FXiinBvNWM9THj4T93Jsz')">show_invoice()</a>
         </div>
     </body>
 </html>
