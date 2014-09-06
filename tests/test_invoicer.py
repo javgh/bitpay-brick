@@ -21,7 +21,7 @@ class Test(unittest.TestCase):
 
         invoicer = Invoicer(self.bitpay_provider, self.frontend,
                 self.nfc_broadcast)
-        invoicer.new_invoice(42)
+        invoicer.new_invoice(42, 'EUR')
 
         self.bitpay_provider.create_invoice.assert_called_with(ANY, ANY)
         self.frontend.show_invoice.assert_called_with(ANY)
