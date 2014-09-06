@@ -5,7 +5,7 @@ import unittest
 
 from os.path import expanduser, isfile
 
-from bitpay_provider import BitPayProvider
+from bitpayprovider import BitPayProvider
 
 TEST_API_KEY_FILE = '.bitpay-brick-test-api-key'
 API_URL_WITH_IP = 'https://141.101.113.162/api/'
