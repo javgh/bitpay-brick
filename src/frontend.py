@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# The QT frontend runs in its own process, as the QT event loop
+# The Qt frontend runs in its own process, as the Qt event loop
 # wants to sit on the main thread.
 
 import threading
