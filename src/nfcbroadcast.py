@@ -64,10 +64,9 @@ class NFCConnection(threading.Thread):
         self.start_signal = Queue()
         try:
             self.clf = nfc.ContactlessFrontend('usb')
-            print "NFC hardware ready"
         except IOError:
             self.clf = None
-            print "No NFC hardware found"
+            print "Warning: no NFC hardware found"
         super(NFCConnection, self).__init__()
 
     def run(self):
@@ -80,7 +79,6 @@ class NFCConnection(threading.Thread):
             self.idle_forever()
 
     def serve_nfc(self):
-        print "NFC hardware active"
         while True:
             self.clf.connect( llcp={'on-connect': self.connected}
                             , terminate=self.check_restart
