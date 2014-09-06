@@ -20,10 +20,17 @@ CMD_GET_CURRENT_INVOICE = 'get_current_invoice'
 CMD_SHUTDOWN = 'shutdown'
 
 class Frontend:
+    TYPE_FRONTEND_STANDARD = 0
+    TYPE_FRONTEND_INVISIBLE = 1
+
+    def __init__(self, frontend_type=TYPE_FRONTEND_STANDARD):
+        self.frontend_type = frontend_type
+
     def start(self):
         self.queue = Queue()
         self.backchannel = Queue()
-        self.frontend_process = FrontendProcess(self.queue, self.backchannel)
+        self.frontend_process = FrontendProcess(self.frontend_type,
+                self.queue, self.backchannel)
         self.frontend_process.start()
 
     def show_invoice(self, url):
@@ -61,7 +68,8 @@ class CmdListener(threading.Thread):
                 is_running = False
 
 class FrontendProcess(Process):
-    def __init__(self, queue, backchannel):
+    def __init__(self, frontend_type, queue, backchannel):
+        self.frontend_type = frontend_type
         self.queue = queue
         self.backchannel = backchannel
         super(FrontendProcess, self).__init__()
@@ -71,7 +79,8 @@ class FrontendProcess(Process):
 
         ready_for_cmds = threading.Event()
         self.display = Display(FRONTEND_HTML, ready_for_cmds)
-        self.display.show()
+        if (self.frontend_type != Frontend.TYPE_FRONTEND_INVISIBLE):
+            self.display.show()
 
         self.app.connect(self.app, QtCore.SIGNAL('_show_invoice(PyQt_PyObject)'),
                 self._show_invoice)
@@ -131,11 +140,3 @@ class Display(QWebView):
     def closeEvent(self, event):
         event.accept()
         QtGui.QApplication.exit()
-
-if __name__ == '__main__':
-    frontend = Frontend()
-    frontend.start()
-
-    frontend.show_invoice('https://bitpay.com/invoice?id=8FXiinBvNWM9THj4T93Jsz')
-    print "-->%s<--" % frontend.get_current_invoice()
-    frontend.shutdown()
