@@ -33,7 +33,7 @@ class BitPayProvider:
                 auth=(self.api_key, ''))
         if 'error' in r.json:
             raise Exception(r.json['error']['message'])
-        invoice = BitPayInvoice.constructFromJSON(self.api_key, self.api_url, r.json)
+        invoice = BitPayInvoice.construct_from_json(r.json)
         return invoice
 
 class BitPayInvoice:
@@ -50,7 +50,7 @@ class BitPayInvoice:
         return self.bitcoin_uri
 
     @staticmethod
-    def constructFromJSON(api_key, api_url, json):
+    def construct_from_json(json):
         invoice_id = json['id']
         url = json['url']
         status = json['status']
