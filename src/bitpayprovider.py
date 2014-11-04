@@ -17,7 +17,7 @@ class BitPayProvider:
 
     def get_euro_rate(self):
         r = requests.get(self.api_url + API_ENDPOINT_RATES)
-        rates = r.json
+        rates = r.json()
         for rate in rates:
             if rate['code'] == CURRENCY_CODE_EUR:
                 return rate['rate']
@@ -31,9 +31,10 @@ class BitPayProvider:
             payload['posData'] = marker
         r = requests.post(self.api_url + API_ENDPOINT_INVOICE, data=payload,
                 auth=(self.api_key, ''))
-        if 'error' in r.json:
-            raise Exception(r.json['error']['message'])
-        invoice = BitPayInvoice.construct_from_json(r.json)
+        json = r.json()
+        if 'error' in json:
+            raise Exception(json['error']['message'])
+        invoice = BitPayInvoice.construct_from_json(json)
         return invoice
 
 class BitPayInvoice:

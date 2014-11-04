@@ -23,7 +23,7 @@ TEST_API_KEY = read_test_api_key()
 class Test(unittest.TestCase):
     def test_rejects_connection_without_verified_certificate(self):
         bitpay_provider = BitPayProvider('', API_URL_WITH_IP)
-        with self.assertRaises(requests.models.SSLError):
+        with self.assertRaises(requests.exceptions.SSLError):
             bitpay_provider.get_euro_rate()
 
     def test_current_euro_rate_is_nonzero(self):
@@ -39,7 +39,7 @@ class Test(unittest.TestCase):
     @unittest.skipUnless(TEST_API_KEY != None, "no API key available")
     def test_creating_a_simple_invoice_is_possible(self):
         bitpay_provider = BitPayProvider(TEST_API_KEY)
-        invoice = bitpay_provider.create_invoice(42, 'EUR')
+        invoice = bitpay_provider.create_invoice(0.05, 'EUR')
         self.assertTrue(invoice.get_url().startswith('https://bitpay.com'),
                 "no BitPay URL provided for invoice")
 
