@@ -22,6 +22,7 @@ class BitPayEventSource(threading.Thread):
         self.callback = callback
         self.event_endpoint = event_endpoint
         self.retrying = retrying
+        self.is_active = True
 
     def run(self):
         if self.retrying:
@@ -32,15 +33,24 @@ class BitPayEventSource(threading.Thread):
             except requests.ConnectionError:
                 self.callback(STATUS_NO_CONNECTION)
 
+    def stop(self):
+        self.is_active = False
+
     @retry(wait_exponential_multiplier=250, wait_exponential_max=30000) # ms
     def connect_with_retrying(self):
         self.connect()
 
     def connect(self):
+        if not self.is_active:
+            return
+
         params = SUBSCRIBE_QUERY % self.token
         r = requests.get(self.event_endpoint, headers=CONTENT_TYPE_HEADER,
                 params=params, stream=True)
-        for line in r.iter_lines(chunk_size=16):
+        for line in r.iter_lines(chunk_size=1):
+            if not self.is_active:
+                break
+
             if ':' not in line:
                 continue
 

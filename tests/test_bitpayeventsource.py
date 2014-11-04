@@ -82,5 +82,12 @@ class Test(unittest.TestCase):
         status = q.get()
         self.assertEqual(status, STATUS_PAID)
 
+    def test_can_be_stopped(self):
+        event_source = BitPayEventSource(TEST_TOKEN,
+                callback = lambda status:status,
+                event_endpoint = TEST_ENDPOINT)
+        event_source.start()
+        event_source.stop()
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import requests
+import sys
 import unittest
 
 from os.path import expanduser, isfile
@@ -48,6 +49,19 @@ class Test(unittest.TestCase):
         bitpay_provider = BitPayProvider(TEST_API_KEY)
         invoice = bitpay_provider.create_invoice(42, 'EUR')
         self.assertTrue(invoice.get_bitcoin_uri().startswith('bitcoin:'))
+
+    @unittest.skipUnless(TEST_API_KEY != None, "no API key available")
+    def test_created_invoice_knows_its_event_token(self):
+        bitpay_provider = BitPayProvider(TEST_API_KEY)
+        invoice = bitpay_provider.create_invoice(42, 'EUR')
+        self.assertTrue(len(invoice.get_event_token()) > 16)
+
+    @unittest.skipUnless(TEST_API_KEY != None, "no API key available")
+    def test_can_watch_and_stop_watching_an_invoice(self):
+        bitpay_provider = BitPayProvider(TEST_API_KEY)
+        invoice = bitpay_provider.create_invoice(42, 'EUR')
+        invoice.watch(callback = lambda status:status)
+        invoice.stop_watching()
 
 if __name__ == '__main__':
     unittest.main()
