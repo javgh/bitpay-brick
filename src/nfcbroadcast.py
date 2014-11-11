@@ -83,6 +83,7 @@ class NFCConnection(threading.Thread):
             self.clf.connect( llcp={'on-connect': self.connected}
                             , terminate=self.check_restart
                             )
+            time.sleep(5)
 
     def idle_forever(self):
         while True:
