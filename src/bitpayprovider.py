@@ -12,6 +12,8 @@ CURRENCY_CODE_EUR = 'EUR'
 API_ENDPOINT_INVOICE = 'invoice'
 BITCOIN_URI_REGEX = '"bitcoin:[^"]*"'
 EVENT_TOKEN_URL = 'https://bitpay.com/invoices/%s/events'
+BIP70_HEADER = {'accept': 'application/bitcoin-paymentrequest'}
+BIP70_URL = 'https://bitpay.com/i/%s'
 
 class BitPayProvider:
     def __init__(self, api_key='', api_url=API_URL):
@@ -41,12 +43,15 @@ class BitPayProvider:
         return invoice
 
 class BitPayInvoice:
-    def __init__(self, invoice_id, url, status, bitcoin_uri, event_token):
+    def __init__(self, invoice_id, url, status, bitcoin_uri, event_token,
+            bip70_url, payment_request):
         self.invoice_id = invoice_id
         self.url = url
         self.status = status
         self.bitcoin_uri = bitcoin_uri
         self.event_token = event_token
+        self.bip70_url = bip70_url
+        self.payment_request = payment_request
         self.event_source = BitPayEventSource(event_token, callback =
                 self._status_callback)
 
@@ -58,6 +63,12 @@ class BitPayInvoice:
 
     def get_event_token(self):
         return self.event_token
+
+    def get_bip70_url(self):
+        return self.bip70_url
+
+    def get_payment_request(self):
+        return self.payment_request
 
     def watch(self, callback):
         """Start a thread that will watch the invoice for status updates. The
@@ -92,4 +103,9 @@ class BitPayInvoice:
             raise Exception("Unable to get event token")
         event_token = json['data']['token']
 
-        return BitPayInvoice(invoice_id, url, status, bitcoin_uri, event_token)
+        bip70_url = BIP70_URL % invoice_id
+        r3 = requests.get(bip70_url, headers=BIP70_HEADER)
+        payment_request = r3.content
+
+        return BitPayInvoice(invoice_id, url, status, bitcoin_uri, event_token,
+                bip70_url, payment_request)

@@ -57,6 +57,18 @@ class Test(unittest.TestCase):
         self.assertTrue(len(invoice.get_event_token()) > 16)
 
     @unittest.skipUnless(TEST_API_KEY != None, "no API key available")
+    def test_created_invoice_knows_its_bip70_url(self):
+        bitpay_provider = BitPayProvider(TEST_API_KEY)
+        invoice = bitpay_provider.create_invoice(42, 'EUR')
+        self.assertTrue(invoice.get_bip70_url().startswith('http'))
+
+    @unittest.skipUnless(TEST_API_KEY != None, "no API key available")
+    def test_created_invoice_has_its_payment_request(self):
+        bitpay_provider = BitPayProvider(TEST_API_KEY)
+        invoice = bitpay_provider.create_invoice(42, 'EUR')
+        self.assertTrue(len(invoice.get_payment_request()), 128)
+
+    @unittest.skipUnless(TEST_API_KEY != None, "no API key available")
     def test_can_watch_and_stop_watching_an_invoice(self):
         bitpay_provider = BitPayProvider(TEST_API_KEY)
         invoice = bitpay_provider.create_invoice(42, 'EUR')
