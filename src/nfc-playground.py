@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from bitpayprovider import BitPayProvider
-from bluetoothservice import BluetoothPaymentRequestService
+from bluetoothservice import BluetoothPaymentRequestService, \
+        BluetoothTxSubmissionService
 from config import read_api_key
 from nfcbroadcast import NFCBroadcast
 
@@ -28,6 +29,9 @@ print btc_uri
 nfc_broadcast = NFCBroadcast()
 nfc_broadcast.start()
 nfc_broadcast.set_btc_uri(btc_uri)
+
+tx_submission_service = BluetoothTxSubmissionService(invoice.get_bip70_url())
+tx_submission_service.start()
 
 raw_input("Press return to exit")
 

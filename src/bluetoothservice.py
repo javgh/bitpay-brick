@@ -13,13 +13,13 @@ import bluetooth._bluetooth as _bt
 from bluetooth import *
 from Queue import Queue
 
-from paymentrequest_pb2 import PaymentDetails, PaymentRequest
+from paymentrequest_pb2 import PaymentACK, PaymentDetails, PaymentRequest
 
 PAYMENT_REQUESTS_DESC = "Bitcoin BIP70 payment requests"
 PAYMENT_REQUESTS_UUID = "3357a7bb-762d-464a-8d9a-dca592d57d59"
 
 TX_SUBMISSION_DESC = "Bitcoin BIP70 tx submission"
-TX_SUBMISSION_UUID = "3357A7BB-762D-464A-8D9A-DCA592D57D5A"
+TX_SUBMISSION_UUID = "3357a7bb-762d-464a-8d9a-dca592d57d5a"
 
 TX_SUBMISSION_HEADERS = { 'content-type': 'application/bitcoin-payment'
                         , 'accept': 'application/bitcoin-paymentack'
@@ -118,7 +118,7 @@ class BluetoothService(threading.Thread):
 
         advertise_service( server_sock, self.service_desc
                          , service_id = self.service_uuid
-                         , service_classes = [ PAYMENT_REQUESTS_UUID ]
+                         , service_classes = [ self.service_uuid ]
                          , profiles = [ ]
                          )
         print "Bluetooth: waiting for connection on RFCOMM channel %d" % port
@@ -138,8 +138,8 @@ class BluetoothService(threading.Thread):
 class BluetoothPaymentRequestService(BluetoothService):
     def __init__(self, payment_request):
         self.serialized_payment_request = payment_request
-        super(BluetoothPaymentRequestService,
-                self).__init__(PAYMENT_REQUESTS_DESC, PAYMENT_REQUESTS_UUID)
+        super(BluetoothPaymentRequestService, self).__init__(
+                PAYMENT_REQUESTS_DESC, PAYMENT_REQUESTS_UUID)
 
     def run(self):
         server_sock = self._init_server()
@@ -195,9 +195,10 @@ class BluetoothPaymentRequestService(BluetoothService):
         server_sock.close()
 
 class BluetoothTxSubmissionService(BluetoothService):
-    def __init__(self):
-        super(BluetoothPaymentRequestService,
-                self).__init__(TX_SUBMISSION_DESC, TX_SUBMISSION_UUID)
+    def __init__(self, submission_url):
+        self.submission_url = submission_url
+        super(BluetoothTxSubmissionService, self).__init__(
+                TX_SUBMISSION_DESC, TX_SUBMISSION_UUID)
 
     def run(self):
         server_sock = self._init_server()
@@ -211,17 +212,30 @@ class BluetoothTxSubmissionService(BluetoothService):
                 tx_length = read_varint32(client_sock)
                 if tx_length > 2 ** 24:
                     raise IOError
+                print "Announced tx length: %d" % tx_length
 
                 # transaction
                 unpacker = struct.Struct('! %ss' % tx_length)
                 body = client_sock.recv(unpacker.size, socket.MSG_WAITALL)
-                tx = unpacker.unpack(body)
-                print "Received tx submission of length %d", len(tx)
+                (tx,) = unpacker.unpack(body)
+                print "Received tx submission of length %d" % len(tx)
+                print repr(tx)
 
                 # submit
-                r = requests.post('https://bitpay.com/i/JSCnjLwButd8Tu2KzLqMNG',
+                r = requests.post(self.submission_url,
                         headers=TX_SUBMISSION_HEADERS, data=tx)
-                print r.text()
+
+                # monkey patch
+                payment_ack = PaymentACK()
+                payment_ack.ParseFromString(r.content)
+                payment_ack.memo = "ack"
+                payment_ack_data = payment_ack.SerializeToString()
+
+                # pass on ack
+                print "Length of ack: %d" % len(payment_ack_data)
+                print repr(payment_ack_data)
+                write_varint32(client_sock, len(payment_ack_data))
+                client_sock.send(payment_ack_data)
             except IOError:
                 pass
 
