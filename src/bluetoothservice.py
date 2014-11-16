@@ -186,13 +186,14 @@ class BluetoothPaymentRequestService(BluetoothService):
 
                 # monkey patch the payment request
                 # to include our Bluetooth address
+                fixed_width_bluetooth_address = self.get_bluetooth_address()
                 payment_request = PaymentRequest()
                 payment_request.ParseFromString(self.serialized_payment_request)
                 payment_details = PaymentDetails()
                 payment_details.ParseFromString(
                         payment_request.serialized_payment_details)
                 payment_details.payment_url = 'bt:%s' % \
-                        self.bt_addr.replace(':', '')
+                        fixed_width_bluetooth_address.replace(':', '')
                 payment_request.serialized_payment_details = \
                         payment_details.SerializeToString()
                 payment_request.ClearField('pki_type')
