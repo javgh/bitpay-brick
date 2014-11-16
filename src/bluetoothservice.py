@@ -133,7 +133,15 @@ class BluetoothService(threading.Thread):
         available. You need to call start() first."""
         if not self.bt_addr:
             self.bt_addr_queue.get()
-        return self.bt_addr
+        components = self.bt_addr.split(':')
+        components = map(self._ensure_two_digits, components)
+        return ':'.join(components)
+
+    def _ensure_two_digits(self, component):
+        if len(component) == 1:
+            return "0" + component
+        else:
+            return component
 
     def run(self):
         raise Exception("Missing implementation")
