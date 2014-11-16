@@ -167,7 +167,8 @@ class BluetoothPaymentRequestService(BluetoothService):
                 # send ok
                 write_varint32(client_sock, 200)
 
-                # monkey patch
+                # monkey patch the payment request
+                # to include our Bluetooth address
                 payment_request = PaymentRequest()
                 payment_request.ParseFromString(self.serialized_payment_request)
                 payment_details = PaymentDetails()
@@ -181,8 +182,6 @@ class BluetoothPaymentRequestService(BluetoothService):
                 payment_request.ClearField('pki_data')
                 payment_request.ClearField('signature')
                 data = payment_request.SerializeToString()
-                print "Monkey patched payment url: %s" % \
-                        payment_details.payment_url
 
                 # send payment request
                 write_varint32(client_sock, len(data))
@@ -212,28 +211,23 @@ class BluetoothTxSubmissionService(BluetoothService):
                 tx_length = read_varint32(client_sock)
                 if tx_length > 2 ** 24:
                     raise IOError
-                print "Announced tx length: %d" % tx_length
 
                 # transaction
                 unpacker = struct.Struct('! %ss' % tx_length)
                 body = client_sock.recv(unpacker.size, socket.MSG_WAITALL)
                 (tx,) = unpacker.unpack(body)
-                print "Received tx submission of length %d" % len(tx)
-                print repr(tx)
 
                 # submit
                 r = requests.post(self.submission_url,
                         headers=TX_SUBMISSION_HEADERS, data=tx)
 
-                # monkey patch
+                # monkey patch ack
                 payment_ack = PaymentACK()
                 payment_ack.ParseFromString(r.content)
                 payment_ack.memo = "ack"
                 payment_ack_data = payment_ack.SerializeToString()
 
                 # pass on ack
-                print "Length of ack: %d" % len(payment_ack_data)
-                print repr(payment_ack_data)
                 write_varint32(client_sock, len(payment_ack_data))
                 client_sock.send(payment_ack_data)
             except IOError:
