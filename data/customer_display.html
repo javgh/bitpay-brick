@@ -9,19 +9,17 @@
     </head>
     <body>
         <div id="idle">
-            <div id="logo_wrapper">
-                <img id="logo" src="images/bitcoin_accepted_here.png" alt="bitcoin accepted here" />
-            </div>
+            <img class="fullscreengraphic" src="idle_320_240.png" alt="bitcoin accepted here" />
         </div>
         <div id="invoice">
-            <iframe id="iframe" />
         </div>
-        <div id="footer">
+        <div id="paid">
+            <img class="fullscreengraphic" src="paid_320_240.png" alt="invoice paid" />
         </div>
         <div id="debug">
             Debug:
             <a href="#" onClick="show_idle()">show_idle()</a>
-            <a href="#" onClick="show_invoice('https://bitpay.com/invoice?id=8FXiinBvNWM9THj4T93Jsz')">show_invoice()</a>
+            <a href="#" onClick="show_paid()">show_paid()</a>
         </div>
     </body>
 </html>

@@ -15,13 +15,19 @@ from PyQt4.QtWebKit import QWebView
 FRONTEND_HTML = 'data/customer_display.html'
 FRONTEND_WINDOW_TITLE = 'BitPay Brick'
 
+CMD_SHOW_IDLE = 'show_idle'
 CMD_SHOW_INVOICE = 'show_invoice'
-CMD_GET_CURRENT_INVOICE = 'get_current_invoice'
+CMD_SHOW_PAID = 'show_paid'
+CMD_GET_ACTIVE_DIV = 'get_active_div'
 CMD_SHUTDOWN = 'shutdown'
+
+SMALL_DISPLAY_WIDTH = 320
+SMALL_DISPLAY_HEIGHT = 240
 
 class Frontend:
     TYPE_FRONTEND_STANDARD = 0
     TYPE_FRONTEND_INVISIBLE = 1
+    TYPE_FRONTEND_SMALL_DISPLAY = 2
 
     def __init__(self, frontend_type=TYPE_FRONTEND_STANDARD):
         self.frontend_type = frontend_type
@@ -33,12 +39,20 @@ class Frontend:
                 self.queue, self.backchannel)
         self.frontend_process.start()
 
-    def show_invoice(self, url):
-        self.queue.put((CMD_SHOW_INVOICE, url))
+    def show_invoice(self, image_data):
+        self.queue.put((CMD_SHOW_INVOICE, image_data))
         self.backchannel.get()  # block until command is processed
 
-    def get_current_invoice(self):
-        self.queue.put((CMD_GET_CURRENT_INVOICE, None))
+    def show_idle(self):
+        self.queue.put((CMD_SHOW_IDLE, None))
+        self.backchannel.get()
+
+    def show_paid(self):
+        self.queue.put((CMD_SHOW_PAID, None))
+        self.backchannel.get()
+
+    def get_active_div(self):
+        self.queue.put((CMD_GET_ACTIVE_DIV, None))
         return self.backchannel.get()
 
     def shutdown(self):
@@ -60,8 +74,14 @@ class CmdListener(threading.Thread):
             if cmd == CMD_SHOW_INVOICE:
                 self.frontend_process.show_invoice(param)
                 self.backchannel.put(None)
-            elif cmd == CMD_GET_CURRENT_INVOICE:
-                answer = self.frontend_process.get_current_invoice()
+            if cmd == CMD_SHOW_IDLE:
+                self.frontend_process.show_idle()
+                self.backchannel.put(None)
+            if cmd == CMD_SHOW_PAID:
+                self.frontend_process.show_paid()
+                self.backchannel.put(None)
+            elif cmd == CMD_GET_ACTIVE_DIV:
+                answer = self.frontend_process.get_active_div()
                 self.backchannel.put(answer)
             elif cmd == CMD_SHUTDOWN:
                 self.frontend_process.shutdown()
@@ -79,13 +99,19 @@ class FrontendProcess(Process):
 
         ready_for_cmds = threading.Event()
         self.display = Display(FRONTEND_HTML, ready_for_cmds)
+        if (self.frontend_type == Frontend.TYPE_FRONTEND_SMALL_DISPLAY):
+            self.display.resize(320, 240)
         if (self.frontend_type != Frontend.TYPE_FRONTEND_INVISIBLE):
             self.display.show()
 
         self.app.connect(self.app, QtCore.SIGNAL('_show_invoice(PyQt_PyObject)'),
                 self._show_invoice)
-        self.app.connect(self.app, QtCore.SIGNAL('_get_current_invoice(PyQt_PyObject)'),
-                self._get_current_invoice)
+        self.app.connect(self.app, QtCore.SIGNAL('_show_idle()'),
+                self._show_idle)
+        self.app.connect(self.app, QtCore.SIGNAL('_show_paid()'),
+                self._show_paid)
+        self.app.connect(self.app, QtCore.SIGNAL('_get_active_div(PyQt_PyObject)'),
+                self._get_active_div)
         self.app.connect(self.app, QtCore.SIGNAL('_shutdown()'),
                 self._shutdown)
 
@@ -96,19 +122,31 @@ class FrontendProcess(Process):
 
         self.app.exec_()
 
-    def show_invoice(self, url):
-        self.app.emit(QtCore.SIGNAL('_show_invoice(PyQt_PyObject)'), url)
+    def show_invoice(self, image_data):
+        self.app.emit(QtCore.SIGNAL('_show_invoice(PyQt_PyObject)'), image_data)
 
-    def _show_invoice(self, url):
-        self.display.show_invoice(url)
+    def _show_invoice(self, image_data):
+        self.display.show_invoice(image_data)
 
-    def get_current_invoice(self):
+    def show_idle(self):
+        self.app.emit(QtCore.SIGNAL('_show_idle()'))
+
+    def _show_idle(self):
+        self.display.show_idle()
+
+    def show_paid(self):
+        self.app.emit(QtCore.SIGNAL('_show_paid()'))
+
+    def _show_paid(self):
+        self.display.show_paid()
+
+    def get_active_div(self):
         answer_queue = Queue()
-        self.app.emit(QtCore.SIGNAL('_get_current_invoice(PyQt_PyObject)'), answer_queue)
+        self.app.emit(QtCore.SIGNAL('_get_active_div(PyQt_PyObject)'), answer_queue)
         return answer_queue.get()
 
-    def _get_current_invoice(self, answer_queue):
-        answer = self.display.get_current_invoice()
+    def _get_active_div(self, answer_queue):
+        answer = self.display.get_active_div()
         answer_queue.put(answer)
 
     def shutdown(self):
@@ -128,11 +166,17 @@ class Display(QWebView):
     def page_is_ready(self):
         self.ready_for_cmds.set()
 
-    def show_invoice(self, url):
-        self._evaluate_java_script('show_invoice("%s")' % url)
+    def show_invoice(self, image_data):
+        self._evaluate_java_script('show_invoice("%s")' % image_data)
 
-    def get_current_invoice(self):
-        return self._evaluate_java_script('get_current_invoice()').toString()
+    def show_idle(self):
+        self._evaluate_java_script('show_idle()')
+
+    def show_paid(self):
+        self._evaluate_java_script('show_paid()')
+
+    def get_active_div(self):
+        return self._evaluate_java_script('get_active_div()').toString()
 
     def _evaluate_java_script(self, js):
         return self.page().mainFrame().evaluateJavaScript(js)

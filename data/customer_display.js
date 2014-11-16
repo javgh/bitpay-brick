@@ -2,10 +2,12 @@ function show_idle() {
     transition_to("#idle");
 }
 
-function show_invoice(url) {
-    $("#iframe").attr("src", url);
-
+function show_invoice(image_data) {
     transition_to("#invoice");
+}
+
+function show_paid() {
+    transition_to("#paid");
 }
 
 function transition_to(replacement_div) {
@@ -15,11 +17,8 @@ function transition_to(replacement_div) {
     active_div = replacement_div;
 }
 
-function get_current_invoice() {
-    if (active_div != "#invoice")
-        return;
-
-    return $("#iframe").attr("src");
+function get_active_div() {
+    return active_div
 }
 
 var active_div = "#idle";
