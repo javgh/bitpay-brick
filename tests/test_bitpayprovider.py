@@ -75,5 +75,14 @@ class Test(unittest.TestCase):
         invoice.watch(callback = lambda status:status)
         invoice.stop_watching()
 
+    @unittest.skipUnless(TEST_API_KEY != None, "no API key available")
+    def test_created_invoice_can_provide_a_bluetooth_bitcoin_uri(self):
+        bitpay_provider = BitPayProvider(TEST_API_KEY)
+        invoice = bitpay_provider.create_invoice(42, 'EUR')
+        bitcoin_uri_normal = invoice.get_bitcoin_uri()
+        bitcoin_uri = invoice.get_bitcoin_uri_with_bluetooth_address(
+                '00:11:22:33:44:55')
+        self.assertIn('bt%3A001122334455', bitcoin_uri)
+
 if __name__ == '__main__':
     unittest.main()

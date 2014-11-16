@@ -2,6 +2,8 @@
 
 import re
 import requests
+import urllib
+import urlparse
 
 from bitpayeventsource import BitPayEventSource
 
@@ -60,6 +62,15 @@ class BitPayInvoice:
 
     def get_bitcoin_uri(self):
         return self.bitcoin_uri
+
+    def get_bitcoin_uri_with_bluetooth_address(self, bluetooth_address):
+        (scheme, netloc, path, query, fragment) = \
+                urlparse.urlsplit(self.bitcoin_uri)
+        query_parts = urlparse.parse_qs(query)
+        query_parts['amount'] = float(query_parts['amount'][0])
+        query_parts['r'] = 'bt:%s' % bluetooth_address.replace(':', '')
+        query = urllib.urlencode(query_parts)
+        return urlparse.urlunsplit((scheme, netloc, path, query, fragment))
 
     def get_event_token(self):
         return self.event_token
