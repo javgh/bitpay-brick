@@ -31,5 +31,13 @@ class Test(unittest.TestCase):
         self.assertEqual(active_div, "#paid")
         self.assertEqual(active_div2, "#idle")
 
+    def test_can_show_invoice(self):
+        frontend = Frontend(Frontend.TYPE_FRONTEND_INVISIBLE)
+        frontend.start()
+        frontend.show_invoice('bitcoin:1asdf')
+        active_div = frontend.get_active_div()
+        frontend.shutdown()
+        self.assertEqual(active_div, "#invoice")
+
 if __name__ == '__main__':
     unittest.main()

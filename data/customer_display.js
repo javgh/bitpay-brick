@@ -3,6 +3,7 @@ function show_idle() {
 }
 
 function show_invoice(image_data) {
+    $("#qrcode").attr("src", image_data)
     transition_to("#invoice");
 }
 

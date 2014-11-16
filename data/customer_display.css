@@ -15,6 +15,11 @@ body {
     height: 100%;
 }
 
+#qrcode {
+    display: block;
+    margin: auto;
+}
+
 #paid {
     display: none;
     width: 100%;

@@ -35,6 +35,7 @@ nfc_broadcast.set_btc_uri(
 
 frontend = Frontend(frontend_type = Frontend.TYPE_FRONTEND_SMALL_DISPLAY)
 frontend.start()
+frontend.show_invoice(invoice.get_bitcoin_uri())
 
 def check_status(status):
     if (status == STATUS_PAID):

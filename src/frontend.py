@@ -3,14 +3,16 @@
 # The Qt frontend runs in its own process, as the Qt event loop
 # wants to sit on the main thread.
 
+import qrencode
 import threading
 import time
+import urllib
 
 from multiprocessing import Process, Queue
 from PyQt4 import QtCore
 from PyQt4 import QtGui
-from PyQt4.Qt import QThread
 from PyQt4.QtWebKit import QWebView
+from StringIO import StringIO
 
 FRONTEND_HTML = 'data/customer_display.html'
 FRONTEND_WINDOW_TITLE = 'BitPay Brick'
@@ -23,6 +25,8 @@ CMD_SHUTDOWN = 'shutdown'
 
 SMALL_DISPLAY_WIDTH = 320
 SMALL_DISPLAY_HEIGHT = 240
+
+QR_CODE_SIZE = 220
 
 class Frontend:
     TYPE_FRONTEND_STANDARD = 0
@@ -39,8 +43,8 @@ class Frontend:
                 self.queue, self.backchannel)
         self.frontend_process.start()
 
-    def show_invoice(self, image_data):
-        self.queue.put((CMD_SHOW_INVOICE, image_data))
+    def show_invoice(self, bitcoin_uri):
+        self.queue.put((CMD_SHOW_INVOICE, bitcoin_uri))
         self.backchannel.get()  # block until command is processed
 
     def show_idle(self):
@@ -122,11 +126,12 @@ class FrontendProcess(Process):
 
         self.app.exec_()
 
-    def show_invoice(self, image_data):
-        self.app.emit(QtCore.SIGNAL('_show_invoice(PyQt_PyObject)'), image_data)
+    def show_invoice(self, bitcoin_uri):
+        self.app.emit(QtCore.SIGNAL('_show_invoice(PyQt_PyObject)'),
+                bitcoin_uri)
 
-    def _show_invoice(self, image_data):
-        self.display.show_invoice(image_data)
+    def _show_invoice(self, bitcoin_uri):
+        self.display.show_invoice(bitcoin_uri)
 
     def show_idle(self):
         self.app.emit(QtCore.SIGNAL('_show_idle()'))
@@ -166,7 +171,11 @@ class Display(QWebView):
     def page_is_ready(self):
         self.ready_for_cmds.set()
 
-    def show_invoice(self, image_data):
+    def show_invoice(self, bitcoin_uri):
+        (_, size, img) = qrencode.encode_scaled(bitcoin_uri, QR_CODE_SIZE)
+        buf = StringIO()
+        img.save(buf, format='PNG')
+        image_data = "data:image/png,%s" % urllib.quote(buf.getvalue())
         self._evaluate_java_script('show_invoice("%s")' % image_data)
 
     def show_idle(self):
