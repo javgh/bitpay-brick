@@ -20,6 +20,8 @@ if not api_key:
 frontend = Frontend(frontend_type = Frontend.TYPE_FRONTEND_SMALL_DISPLAY)
 frontend.start()
 
+raw_input("Press return to show invoice")
+
 bitpay_provider = BitPayProvider(api_key)
 invoice = bitpay_provider.create_invoice(DEFAULT_AMOUNT, DEFAULT_CURRENCY)
 
