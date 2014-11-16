@@ -32,6 +32,7 @@ class Frontend:
     TYPE_FRONTEND_STANDARD = 0
     TYPE_FRONTEND_INVISIBLE = 1
     TYPE_FRONTEND_SMALL_DISPLAY = 2
+    TYPE_FRONTEND_FULLSCREEN = 3
 
     def __init__(self, frontend_type=TYPE_FRONTEND_STANDARD):
         self.frontend_type = frontend_type
@@ -105,6 +106,8 @@ class FrontendProcess(Process):
         self.display = Display(FRONTEND_HTML, ready_for_cmds)
         if (self.frontend_type == Frontend.TYPE_FRONTEND_SMALL_DISPLAY):
             self.display.resize(320, 240)
+        if (self.frontend_type == Frontend.TYPE_FRONTEND_FULLSCREEN):
+            self.display.showFullScreen()
         if (self.frontend_type != Frontend.TYPE_FRONTEND_INVISIBLE):
             self.display.show()
 
