@@ -3,6 +3,7 @@
 import binascii
 import errno
 import requests
+import select
 import socket
 import struct
 import threading
@@ -24,6 +25,8 @@ TX_SUBMISSION_UUID = "3357a7bb-762d-464a-8d9a-dca592d57d5a"
 TX_SUBMISSION_HEADERS = { 'content-type': 'application/bitcoin-payment'
                         , 'accept': 'application/bitcoin-paymentack'
                         }
+
+SELECT_LOOP_INTERVAL = 0.1      # 100 ms
 
 def read_varint32(sock):
     mask = (1 << 32) - 1
@@ -61,6 +64,7 @@ class BluetoothService(threading.Thread):
         self.service_uuid = service_uuid
         self.bt_addr = None
         self.bt_addr_queue = Queue()
+        self.is_active = True
         super(BluetoothService, self).__init__()
 
     def _find_local_bdaddr(self):
@@ -121,7 +125,6 @@ class BluetoothService(threading.Thread):
                          , service_classes = [ self.service_uuid ]
                          , profiles = [ ]
                          )
-        print "Bluetooth: waiting for connection on RFCOMM channel %d" % port
 
         return server_sock
 
@@ -143,11 +146,17 @@ class BluetoothPaymentRequestService(BluetoothService):
 
     def run(self):
         server_sock = self._init_server()
+        server_sock.setblocking(0)
 
-        while True:
+        while self.is_active:
+            (rlist, _, _) = select.select(
+                    [server_sock], [], [], SELECT_LOOP_INTERVAL)
+
+            if len(rlist) == 0:
+                continue
+
             client_sock, client_info = server_sock.accept()
             print "Accepted connection from ", client_info
-
             try:
                 # header: a single '0' and then the length of the request string
                 just_zero = read_varint32(client_sock)
@@ -193,6 +202,10 @@ class BluetoothPaymentRequestService(BluetoothService):
             client_sock.close()
         server_sock.close()
 
+    def stop(self):
+        self.is_active = False
+        self.join()
+
 class BluetoothTxSubmissionService(BluetoothService):
     def __init__(self, submission_url):
         self.submission_url = submission_url
@@ -201,11 +214,17 @@ class BluetoothTxSubmissionService(BluetoothService):
 
     def run(self):
         server_sock = self._init_server()
+        server_sock.setblocking(0)
 
-        while True:
+        while self.is_active:
+            (rlist, _, _) = select.select(
+                    [server_sock], [], [], SELECT_LOOP_INTERVAL)
+
+            if not rlist:
+                continue
+
             client_sock, client_info = server_sock.accept()
             print "Accepted connection from ", client_info
-
             try:
                 # read length
                 tx_length = read_varint32(client_sock)
@@ -236,3 +255,7 @@ class BluetoothTxSubmissionService(BluetoothService):
             print "Bluetooth client disconnected"
             client_sock.close()
         server_sock.close()
+
+    def stop(self):
+        self.is_active = False
+        self.join()
