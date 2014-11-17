@@ -9,15 +9,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="63.779526"
-   height="148.81889"
+   width="85.039368"
+   height="170.07874"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="sticker2.svg"
    inkscape:export-filename="/home/jan/main/private/bitpay-brick/data/sticker2.png"
-   inkscape:export-xdpi="299.96191"
-   inkscape:export-ydpi="299.96191">
+   inkscape:export-xdpi="600.08002"
+   inkscape:export-ydpi="600.08002">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -28,17 +28,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="-20.381658"
-     inkscape:cy="88.38263"
-     inkscape:document-units="px"
+     inkscape:cx="46.76468"
+     inkscape:cy="74.346356"
+     inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      units="mm"
-     inkscape:window-width="1152"
-     inkscape:window-height="736"
-     inkscape:window-x="1650"
-     inkscape:window-y="104"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="1094"
+     inkscape:window-height="819"
+     inkscape:window-x="1634"
+     inkscape:window-y="154"
+     inkscape:window-maximized="0"
+     showguides="true"
+     inkscape:guide-bbox="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -55,63 +57,76 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-903.54329)">
+     transform="translate(0,-882.28345)">
     <rect
-       style="fill:none;stroke:#000000;stroke-width:1.7267698;stroke-opacity:1"
+       style="fill:#000000;stroke:#950000;stroke-width:2.41333317999999997;stroke-opacity:1"
        id="rect2985"
-       width="62.185078"
-       height="147.4014"
-       x="0.73475742"
-       y="904.44946" />
+       width="97.569939"
+       height="183.50055"
+       x="-5.3724303"
+       y="875.39404" />
     <g
        id="g3880"
-       transform="matrix(1.459021,0,0,1.459021,-14.638071,-456.81276)">
+       transform="matrix(1.459021,0,0,1.459021,-4.0081499,-467.44268)"
+       style="fill:#ffffff">
       <g
          transform="translate(8.5141884,7.5)"
-         id="g3872">
+         id="g3872"
+         style="fill:#ffffff">
         <g
            id="g3"
-           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)">
+           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)"
+           style="fill:#ffffff">
           <g
-             id="g5">
+             id="g5"
+             style="fill:#ffffff">
             <path
                d="M 53.075,92.004 H 29.429 c -5.299,0 -9.609,-4.312 -9.609,-9.609 V 35.103 c 0,-5.295 4.311,-9.607 9.609,-9.607 h 23.646 c 5.295,0 9.606,4.312 9.606,9.607 v 47.292 c 0.001,5.297 -4.311,9.609 -9.606,9.609 z M 29.429,28.948 c -3.395,0 -6.158,2.761 -6.158,6.155 v 47.292 c 0,3.394 2.764,6.158 6.158,6.158 h 23.646 c 3.394,0 6.154,-2.765 6.154,-6.158 V 35.103 c 0,-3.395 -2.761,-6.155 -6.154,-6.155 H 29.429 z"
                id="path7"
-               inkscape:connector-curvature="0" />
+               inkscape:connector-curvature="0"
+               style="fill:#ffffff" />
           </g>
         </g>
         <g
            id="g9"
-           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)">
+           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)"
+           style="fill:#ffffff">
           <g
-             id="g11">
+             id="g11"
+             style="fill:#ffffff">
             <rect
                x="27.458"
                y="33.133999"
                width="27.584999"
                height="51.231998"
-               id="rect13" />
+               id="rect13"
+               style="fill:#ffffff" />
           </g>
         </g>
       </g>
       <g
          transform="matrix(0.7189759,-0.69503501,0.69503501,0.7189759,-664.08841,298.88421)"
-         id="g3866">
+         id="g3866"
+         style="fill:#ffffff">
         <g
            id="g15"
-           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)">
+           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)"
+           style="fill:#ffffff">
           <path
              d="m 70.182,35.496 c -1.381,0 -2.5,-1.119 -2.5,-2.5 0,-6.893 -5.607,-12.5 -12.5,-12.5 -1.381,0 -2.5,-1.119 -2.5,-2.5 0,-1.381 1.119,-2.5 2.5,-2.5 9.649,0 17.5,7.851 17.5,17.5 0,1.381 -1.119,2.5 -2.5,2.5 z"
              id="path17"
-             inkscape:connector-curvature="0" />
+             inkscape:connector-curvature="0"
+             style="fill:#ffffff" />
         </g>
         <g
            id="g19"
-           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)">
+           transform="matrix(0.85137626,0,0,0.85137626,-11.744122,936.44814)"
+           style="fill:#ffffff">
           <path
              d="m 80.182,35.496 c -1.381,0 -2.5,-1.119 -2.5,-2.5 0,-12.407 -10.094,-22.5 -22.5,-22.5 -1.381,0 -2.5,-1.119 -2.5,-2.5 0,-1.381 1.119,-2.5 2.5,-2.5 15.163,0 27.5,12.336 27.5,27.5 0,1.381 -1.119,2.5 -2.5,2.5 z"
              id="path21"
-             inkscape:connector-curvature="0" />
+             inkscape:connector-curvature="0"
+             style="fill:#ffffff" />
         </g>
       </g>
     </g>
