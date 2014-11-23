@@ -1,9 +1,14 @@
 function request_new_invoice() {
+    transition_to("#processing");
     pyObj.request_new_invoice();
 }
 
 function show_idle() {
     transition_to("#idle");
+}
+
+function show_keypad() {
+    transition_to("#keypad");
 }
 
 function show_invoice(image_data) {
@@ -34,7 +39,7 @@ var active_div = "#idle";
 
 $(document).ready(function() {
     $("#logo").click(function() {
-        transition_to("#keypad");
+        show_keypad();
     });
 
     $("#checkmark").click(function() {
