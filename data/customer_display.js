@@ -1,3 +1,7 @@
+function request_new_invoice() {
+    pyObj.request_new_invoice();
+}
+
 function show_idle() {
     transition_to("#idle");
 }
@@ -19,7 +23,27 @@ function transition_to(replacement_div) {
 }
 
 function get_active_div() {
-    return active_div
+    return active_div;
+}
+
+function exercise_javascript_bridge() {
+    request_new_invoice();
 }
 
 var active_div = "#idle";
+
+$(document).ready(function() {
+    $("#logo").click(function() {
+        transition_to("#keypad");
+    });
+
+    $("#checkmark").click(function() {
+        transition_to("#idle");
+    });
+
+    $("#button_ok").click(function() {
+        request_new_invoice();
+    });
+});
+
+

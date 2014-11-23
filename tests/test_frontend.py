@@ -2,6 +2,8 @@
 
 import unittest
 
+from Queue import Queue
+
 from frontend import Frontend
 
 class Test(unittest.TestCase):
@@ -38,6 +40,18 @@ class Test(unittest.TestCase):
         active_div = frontend.get_active_div()
         frontend.shutdown()
         self.assertEqual(active_div, "#invoice")
+
+    def test_user_can_initiate_new_invoice(self):
+        q = Queue()
+        def request_received():
+            q.put(None)
+
+        frontend = Frontend(Frontend.TYPE_FRONTEND_INVISIBLE,
+                invoice_request_callback=request_received)
+        frontend.start()
+        frontend.exercise_javascript_bridge()
+        q.get()
+        frontend.shutdown()
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,7 +2,11 @@
 
 from frontend import Frontend
 
-frontend = Frontend(frontend_type = Frontend.TYPE_FRONTEND_SMALL_DISPLAY)
+def show_msg():
+    print "Request for a new invoice"
+
+frontend = Frontend(frontend_type = Frontend.TYPE_FRONTEND_SMALL_DISPLAY,
+        invoice_request_callback=show_msg)
 frontend.start()
 
 raw_input("Press return to perform transition")
