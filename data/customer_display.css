@@ -20,17 +20,17 @@ body {
 }
 
 #keypad input {
-    font-size: 1.5em;
-    margin-top: 25px;
+    font-size: 1.2em;
+    margin-top: 20px;
     margin-bottom: 5px;
     text-align: right;
     width: 235px;
 }
 
 #keypad button {
-    font-size: 1.5em;
+    font-size: 1.2em;
     width: 70px;
-    height: 30px;
+    height: 28px;
     margin: 5px;
 }
 
