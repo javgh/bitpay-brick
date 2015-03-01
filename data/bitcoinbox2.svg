@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="Layer_1"
+   x="0px"
+   y="0px"
+   width="50px"
+   height="50px"
+   viewBox="2.5 -5.0 50.0 67.5"
+   enable-background="new 0 0 50 50"
+   xml:space="preserve"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="bitcoinbox2.svg"
+   inkscape:export-filename="/home/jan/main/private/bitpay-brick/data/bitcoinbox2.png"
+   inkscape:export-xdpi="28.799999"
+   inkscape:export-ydpi="28.799999"><metadata
+   id="metadata14"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs12" /><sodipodi:namedview
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1"
+   objecttolerance="10"
+   gridtolerance="10"
+   guidetolerance="10"
+   inkscape:pageopacity="0"
+   inkscape:pageshadow="2"
+   inkscape:window-width="948"
+   inkscape:window-height="707"
+   id="namedview10"
+   showgrid="false"
+   inkscape:zoom="4.72"
+   inkscape:cx="36.507631"
+   inkscape:cy="4.8794315"
+   inkscape:window-x="1751"
+   inkscape:window-y="96"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="stop" />
+<g
+   id="stop"
+   transform="translate(-73.506356,-7.4364407)">
+	<path
+   d="m 89.705259,12.764369 c -6.685312,0 -12.120967,5.441674 -12.120967,12.120967 v 22.601005 c 0,6.682905 5.435655,12.122171 12.120967,12.122171 h 22.601001 c 6.6853,0 12.12216,-5.44047 12.12216,-12.122171 V 24.88654 c 0,-6.685313 -5.43805,-12.120967 -12.12216,-12.120967 m 7.27643,34.719564 c 0,4.010224 -3.26501,7.271617 -7.27643,7.271617 H 89.705259 c -4.005409,0 -7.27282,-3.261393 -7.27282,-7.271617 V 24.881724 c 0,-4.011428 3.267411,-7.274025 7.27282,-7.274025 h 22.601001 c 4.01142,0 7.27643,3.262597 7.27643,7.274025 v 22.603413 z"
+   id="path4"
+   inkscape:connector-curvature="0"
+   style="fill:#000000" />
+</g>
+</svg>
