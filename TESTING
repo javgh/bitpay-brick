@@ -1,0 +1,3 @@
+Run all tests: nosetests -v
+Run specific test: nosetests tests/test_bitpayprovider.py:\
+                    Test.test_creating_a_simple_invoice_is_possible

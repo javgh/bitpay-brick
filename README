@@ -1,3 +1,5 @@
-Run all tests: nosetests -v
-Run specific test: nosetests tests/test_bitpayprovider.py:\
-                    Test.test_creating_a_simple_invoice_is_possible
+This is the prototype for the 'Bitcoin Box' - see http://www.thebitcoinbox.com/
+
+BitPay is a trademark of Bitpay, Inc. The name 'bitpay brick' was simply an
+internal code name for the project and Bitpay has no associations with this
+prototype or the crowdfunding campaign.
